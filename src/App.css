@@ -1,0 +1,160 @@
+:root {
+  --primary-color: #0D5C63; /* Dark teal green */
+  --primary-hover: #0a464c;
+  --accent-color: #FF6B5B; /* Coral */
+  --accent-hover: #e55c4d;
+  --bg-color: #F5EFE6; /* Beige */
+  --card-bg: #ffffff;
+  --text-primary: #2E2E2E; /* Dark gray */
+  --border-color: #e5e7eb;
+  --input-bg: #F5EFE6;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+}
+
+.app-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.form-wrapper {
+  background: var(--card-bg);
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05), 0 4px 6px rgba(0, 0, 0, 0.02);
+  width: 100%;
+  max-width: 440px;
+  overflow: hidden; /* Ensures header corners match */
+}
+
+.form-header {
+  background-color: var(--primary-color);
+  padding: 2rem 2.5rem;
+  color: white;
+}
+
+.form-header .subtitle {
+  color: var(--accent-color);
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+}
+
+.form-header .title {
+  font-size: 1.85rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem 0;
+  letter-spacing: -0.02em;
+}
+
+.form-header .description {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0;
+  color: #e2e8f0;
+  font-weight: 400;
+}
+
+.accommodation-form {
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.half-width {
+  flex: 1;
+}
+
+label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+input, select {
+  padding: 0.875rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: var(--text-primary);
+  background-color: var(--input-bg);
+  transition: all 0.2s ease;
+  outline: none;
+  font-family: inherit;
+}
+
+input:focus, select:focus {
+  border-color: var(--primary-color);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 2px rgba(13, 92, 99, 0.1);
+}
+
+input::placeholder {
+  color: #a1a1aa;
+}
+
+/* Adjust date input icon appearance if supported */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+.submit-btn {
+  margin-top: 0.5rem;
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  font-family: inherit;
+}
+
+.submit-btn:hover {
+  background-color: var(--accent-hover);
+}
+
+.submit-btn:active {
+  transform: scale(0.98);
+}
+
+.footer-text {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #9ca3af;
+  margin: 0.5rem 0 0 0;
+}
+
+@media (max-width: 480px) {
+  .form-row {
+    flex-direction: column;
+  }
+  .form-header {
+    padding: 1.5rem;
+  }
+  .accommodation-form {
+    padding: 1.5rem;
+  }
+}
