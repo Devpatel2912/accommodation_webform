@@ -14,7 +14,7 @@ function App() {
   const [errorMsg, setErrorMsg] = useState('');
   const [pradeshList, setPradeshList] = useState([]);
 
-  const BASE_URL = 'http://localhost:5000/requests';
+  const BASE_URL = 'http://27.116.52.24:8072/requests';
   const today = new Date().toISOString().split('T')[0];
 
   // Fetch Pradesh list from database on mount
