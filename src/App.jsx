@@ -44,27 +44,87 @@ function App() {
     }));
   };
 
+  const supabaseFetch = async (endpoint, options = {}) => {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${endpoint}`, {
+      ...options,
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=representation',
+        ...options.headers,
+      },
+    });
+    return res;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     setErrorMsg('');
 
     try {
-      const response = await fetch(`${BASE_URL}/public`, {
+      const { pradesh, name, number, checkInDate, checkOutDate } = formData;
+
+      if (!pradesh || !name || !number || !checkInDate || !checkOutDate) {
+        setErrorMsg('All fields are required.');
+        return;
+      }
+
+      // 1. Find Pradesh ID
+      const pradeshRes = await supabaseFetch(`pradesh?select=id&name=eq.${encodeURIComponent(pradesh)}&limit=1`);
+      const pradeshData = await pradeshRes.json();
+      if (!pradeshData.length) {
+        setErrorMsg('Invalid Pradesh selected.');
+        return;
+      }
+      const pradeshId = pradeshData[0].id;
+
+      // 2. Find a USER belonging to this Pradesh
+      const userRes = await supabaseFetch(`users?select=id,name,email&pradesh_id=eq.${pradeshId}&role=eq.USER&limit=1`);
+      const userData = await userRes.json();
+      if (!userData.length) {
+        setErrorMsg(`No user found for Pradesh: ${pradesh}. Please contact admin.`);
+        return;
+      }
+      const pradeshUser = userData[0];
+
+      // 3. Create the request
+      const requestRes = await supabaseFetch('requests', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+          user_id: pradeshUser.id,
+          request_name: `Webform - ${name}`,
+          check_in: checkInDate,
+          check_out: checkOutDate,
+          total_people: 1,
+          notes: null,
+          status: 'PENDING',
+        }),
+      });
+      const requestData = await requestRes.json();
+      if (!requestData.length) {
+        setErrorMsg('Failed to create request. Please try again.');
+        return;
+      }
+      const requestId = requestData[0].id;
+
+      // 4. Insert member into request_members
+      await supabaseFetch('request_members', {
+        method: 'POST',
+        body: JSON.stringify({
+          request_id: requestId,
+          name: name,
+          contact: number,
+          pradesh_id: pradeshId,
+          email: null,
+        }),
       });
 
-      const data = await response.json();
-
-      if (response.ok && data.success) {
-        setShowModal(true);
-      } else {
-        setErrorMsg(data.error || 'Something went wrong. Please try again.');
-      }
+      setShowModal(true);
     } catch (err) {
-      setErrorMsg('Unable to connect to server. Please try again later.');
+      console.error('Submit error:', err);
+      setErrorMsg('Unable to submit request. Please try again later.');
     } finally {
       setIsSubmitting(false);
     }
