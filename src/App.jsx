@@ -15,15 +15,22 @@ function App() {
   const [pradeshList, setPradeshList] = useState([]);
 
   const BASE_URL = 'http://27.116.52.24:8072/requests';
+  const SUPABASE_URL = 'https://woushgaduuivvupthfge.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndvdXNoZ2FkdXVpdnZ1cHRoZmdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxMzM3MDgsImV4cCI6MjA5MjcwOTcwOH0.0nWsJUBM7Abmb0Smott-NNpCrspgok8IEnBZzWCWP1c';
   const today = new Date().toISOString().split('T')[0];
 
-  // Fetch Pradesh list from database on mount
+  // Fetch Pradesh list directly from Supabase (HTTPS)
   useEffect(() => {
-    fetch(`${BASE_URL}/pradesh`)
+    fetch(`${SUPABASE_URL}/rest/v1/pradesh?select=id,name&order=name`, {
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+      },
+    })
       .then(res => res.json())
       .then(data => {
-        if (data.success && data.pradesh) {
-          setPradeshList(data.pradesh);
+        if (Array.isArray(data)) {
+          setPradeshList(data);
         }
       })
       .catch(err => console.error('Failed to load Pradesh list:', err));
