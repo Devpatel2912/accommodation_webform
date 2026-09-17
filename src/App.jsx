@@ -94,7 +94,7 @@ function App() {
         method: 'POST',
         body: JSON.stringify({
           user_id: pradeshUser.id,
-          request_name: `Webform - ${name}`,
+          request_name: name,
           check_in: checkInDate,
           check_out: checkOutDate,
           total_people: 1,
