@@ -16,15 +16,15 @@ function App() {
 
   const BASE_URL = 'http://27.116.52.24:8072/requests';
   const SUPABASE_URL = 'https://woushgaduuivvupthfge.supabase.co';
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndvdXNoZ2FkdXVpdnZ1cHRoZmdlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcxMzM3MDgsImV4cCI6MjA5MjcwOTcwOH0.0nWsJUBM7Abmb0Smott-NNpCrspgok8IEnBZzWCWP1c';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndvdXNoZ2FkdXVpdnZ1cHRoZmdlIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NzEzMzcwOCwiZXhwIjoyMDkyNzA5NzA4fQ.VgxAMzRxhaZlcHmSgJw_xGPfdLLZej_XHTbK2j3fJvQ';
   const today = new Date().toISOString().split('T')[0];
 
   // Fetch Pradesh list directly from Supabase (HTTPS)
   useEffect(() => {
     fetch(`${SUPABASE_URL}/rest/v1/pradesh?select=id,name&order=name`, {
       headers: {
-        'apikey': SUPABASE_ANON_KEY,
-        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
       },
     })
       .then(res => res.json())
